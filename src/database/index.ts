@@ -1,12 +1,14 @@
-import { DataSource } from "typeorm";
+import {createConnection, getConnectionOptions} from 'typeorm';
 
-const dataSource = new DataSource({
-  type: "postgres",
-  port: 5432,
-  host: "localhost",
-  username: "docker",
-  password: "ignite",
-  database: "rentx",
-});
+interface IOptions {
+    host: string;
+}
 
-dataSource.initialize();
+getConnectionOptions().then(options => {
+    const newOptions = options as IOptions;
+
+    newOptions.host = 'database_ignite';
+    createConnection({
+        ...options
+    });
+})
